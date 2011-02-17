@@ -8,40 +8,22 @@ use Try::Tiny;
 
 our $VERSION = '0.0.1';
 with 'MooseX::Workers';
+with 'Schedule::Pluggable::Trace';
 with 'Schedule::Pluggable::Config';
 with 'Schedule::Pluggable::Run';
-with 'Schedule::Pluggable::Monitor';
+with 'Schedule::Pluggable::Events';
 with 'Schedule::Pluggable::Status';
 with 'MooseX::Object::Pluggable';
 
-our %imports = ();
+our %imports = ();  # Anything supplied in the use statement goes in here e.g. use Schedule::Pluggable (something => value);
 
-has Trace => ( is => 'rw',
-               isa => 'Bool',
-               reader   => '_get_Trace',
-               writer   => '_set_Trace',
-               default => 0,
-            );
-
-has TracePlugin => ( is => 'rw',
-                     isa => 'Str',
-                     reader   => '_get_TracePlugin',
-                     writer   => '_set_TracePlugin',
-                     default => 'Trace',
-                  );
-
-has JobsPlugin => ( is      => 'rw',
-                    isa     => 'Str',
-                    reader  => 'get_JobsPlugin',
-                    default => 'JobsFromData',
+has Plugins  => ( is        => 'rw',
+                  isa       => 'ArrayRef',
+                  reader    => '_get_Plugins',
+                  writer    => '_set_Plugins',
                     );
 
-has EventsPlugins => ( is        => 'rw',
-                       isa       => 'ArrayRef',
-                       reader  => 'get_EventsPlugins',
-                       default   => sub { return [ qw/DefaultEventHandler/ ] },
-                    );
-
+# merge anything specied in %imports with any parameters passed on object creation
 sub BUILDARGS {
    my $class = shift;
 
@@ -50,15 +32,17 @@ sub BUILDARGS {
 }
 sub BUILD {
     my $self = shift;
+    my @plugins;
     try {
-        my @plugins = ( $self->get_JobsPlugin, @{ $self->get_EventsPlugins } );
-        push(@plugins, $self->get_TracePlugin) if $self->_get_Trace;
+        @plugins = @{ $self->_get_Plugins };
+        warn Dumper \@plugins;
         $self->load_plugins( @plugins );
     } catch {
-           croak "Failed loading Plugin ".$self->get_JobsPlugin." and ".$self->get_EventsPlugins. ": $_";
+           croak "Failed loading Plugins ".join(",", @plugins).": $_";
     };
 }
 
+# Populate %imports with whatever gets supplied on the use line
 sub import {
     my $class = shift;
     if (scalar(@_) % 2 == 0) {
@@ -155,12 +139,13 @@ Schedule::Pluggable - Flexible Perl Process Scheduler
 =head1 DESCRIPTION
 
 Schedule::Pluggable is a perl module which provides a simple but powerful way of running processes in a controlled way.
-In true perl fashion it makes simple things easy and compicated things possible.
-In provides many options to control what happens with sensible defaults so attempt to do the right thing by default
+In true perl fashion it makes simple things easy and complicated things possible.
+It also uses a system of plugins so you can change it's behaviour to suit your requirements by supplying your own plugins.
+For most cases the default plugins will suffice however.
 
 =head1 OPTIONS
 
-You can override the default behaviour of Schedule::Pluggable by supplying options with the use statement 
+You can override the default behaviour of Schedule::Pluggable by supplying options with the use statement in for form of a hash
 
 i.e.
 
@@ -171,7 +156,9 @@ The Following options are supported :-
 
 =head2 B<JobsConfig>
 
-where to get the job configuration - defaults to JobsFromArray
+Specifies which plugin to use to provide the job configuration - defaults to JobsFromData which expects you to supply the job configuration in an array
+
+Each plugin is expected to 
 
 e.g.
 
@@ -183,11 +170,11 @@ Currently the available values are :-
 
 =item B<JobsFromArray>
 
-The default which activates the role 'Schedule::Pluggable::Plugin::JobsFromArray' which as the name suggests expects the job configuration to be be supplied as an reference to an array of jobs to run.
+The default which activates the role 'Schedule::Pluggable::Plugin::JobsFromData' which as the name suggests expects the job configuration to be be supplied as an reference to an array of jobs to run.
 
 =item B<JobsFromXML>
 
-Activates plugin Schedule::Pluggable::Plugin::JobsFromXML which obtains the jobs configuration from a n XML file
+Activates plugin Schedule::Pluggable::Plugin::JobsFromXML which obtains the jobs configuration from an XML file
 
 =back
 

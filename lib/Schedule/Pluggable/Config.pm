@@ -6,6 +6,19 @@ use Try::Tiny;
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
+has JobsPlugin => ( is      => 'rw',
+                    isa     => 'Str',
+                    reader  => '_get_JobsPlugin',
+                    default => 'JobsFromData',
+                    );
+
+before BUILD => sub {
+    my $self = shift;
+    my $plugins = $self->_get_Plugins;
+    push( @{ $plugins }, $self->_get_JobsPlugin );
+    $self->_set_Plugins($plugins);
+};
+
 sub _validate_config {
 	my ($self, $params) = @_;
     my $job_config = $self->get_job_config($params);
