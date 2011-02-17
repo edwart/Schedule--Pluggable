@@ -11,7 +11,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Moose' => 0,
         'MooseX::Workers' => 0,
-	'MooseX::Object::Pluggable' => 0,
+        'MooseX::Object::Pluggable' => 0,
         'Test::More' => 0,
         'version'    => 0,
     },

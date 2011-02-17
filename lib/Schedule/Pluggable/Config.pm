@@ -6,24 +6,27 @@ use Try::Tiny;
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
+has JobsToRun => ( is 	=> 'rw',
+				   isa	=> 'HashRef',
+				   default => sub { return [ qw/all/ ] },
+			   );
+
 has JobsPlugin => ( is      => 'rw',
                     isa     => 'Str',
                     reader  => '_get_JobsPlugin',
                     default => 'JobsFromData',
                     );
 
+
 after BUILD => sub {
     my $self = shift;
-#    my $plugins = $self->_get_Plugins;
-#    push( @{ $plugins }, $self->_get_JobsPlugin );
-#    $self->_set_Plugins($plugins);
-	warn "Loading ".$self->_get_JobsPlugin;
 	$self->load_plugins( $self->_get_JobsPlugin );
 };
 
+# Gets the job config via the plugin method get_job_config, validates it, works out the dependencies
 sub _validate_config {
 	my ($self, $params) = @_;
-    my $job_config = $self->get_job_config($params);
+    my $job_config = $self->get_job_config($params); # get_job_config from JobsPlugin
 	my $status = $self->_get_status();
 	my %prerequisites = ();
     my $jobs = [];
@@ -32,7 +35,6 @@ sub _validate_config {
             my %j = %{ $job_config->{$job_name} };
             $j{name} ||= $job_name;
             push(@{ $jobs }, { %j });
-
         }
     }
     elsif (ref ($job_config) eq "ARRAY") {
