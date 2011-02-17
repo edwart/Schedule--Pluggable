@@ -19,9 +19,7 @@ has TracePlugin => ( is => 'rw',
 
 before BUILD => sub {
     my $self = shift;
-    my $plugins = $self->_get_Plugins;
-    push( @{ $plugins }, $self->_get_TracePlugin ) if $self->_get_Trace;
-    $self->_set_Plugins($plugins);
+	$self->load_plugins( @{ $self->_get_TracePlugin } ) if $self->_get_Trace;
 };
 1;
 __END__

@@ -25,7 +25,7 @@ has ErrorsTo => ( is => 'rw',
                     );
                            
 
-sub event_handler {
+after event_handler => sub {
     my $self = shift;
 	my %params = @_;
 	return if exists $params{JobName} and  $params{JobName} =~ m/^MonitorJobs$/i;
@@ -60,7 +60,7 @@ sub event_handler {
     else {
         $handle->(join(' ',@mess)."\n"); 
     }
-}
+};
 no Moose;
 1;
 __END__

@@ -12,11 +12,13 @@ has JobsPlugin => ( is      => 'rw',
                     default => 'JobsFromData',
                     );
 
-before BUILD => sub {
+after BUILD => sub {
     my $self = shift;
-    my $plugins = $self->_get_Plugins;
-    push( @{ $plugins }, $self->_get_JobsPlugin );
-    $self->_set_Plugins($plugins);
+#    my $plugins = $self->_get_Plugins;
+#    push( @{ $plugins }, $self->_get_JobsPlugin );
+#    $self->_set_Plugins($plugins);
+	warn "Loading ".$self->_get_JobsPlugin;
+	$self->load_plugins( $self->_get_JobsPlugin );
 };
 
 sub _validate_config {

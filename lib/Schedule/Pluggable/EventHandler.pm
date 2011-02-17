@@ -1,8 +1,8 @@
-package Schedule::Pluggable::Events;
+package Schedule::Pluggable::EventHandler;
 
 use Moose::Role;
 use Carp;
-use IO::Prompt;
+#use IO::Prompt;
 use Data::Dumper;
 use POSIX qw/ strftime /;
 $Data::Dumper::Sortkeys = 1;
@@ -14,9 +14,7 @@ has EventsPlugins => ( is        => 'rw',
 
 before BUILD => sub {
     my $self = shift;
-    my $plugins = $self->_get_Plugins;
-    push( @{ $plugins }, @{ $self->_get_EventsPlugins } );
-    $self->_set_Plugins($plugins);
+	$self->load_plugins( @{ $self->_get_EventsPlugins } );
 };
 
 sub worker_manager_start {
@@ -92,6 +90,7 @@ sub worker_done {
 }
 sub worker_started {
     my $self = shift;
+
     my ( $job ) = @_;
 
     $self->_update_status({ name => $job->name }, { Id => $job->ID, Pid => $job->PID, timestarted => strftime("%d/%m/%Y %H:%M:%S", localtime(time)) });
@@ -119,6 +118,9 @@ sub sig_BUS {
 }
 sub sig_SEGV {
     confess("sig_SEGV\n".Data::Dumper->Dump([\@_],[qw/@_/]));
+}
+sub event_handler {
+    my $self = shift;
 }
 1;
 __END__
@@ -152,6 +154,8 @@ Moose Role to handle the interface to MooseX::Workers by providing the methods w
 =item worker_done           - called when a job finishes
 
 =item sig_INT               - called when the interupt signal (control-c) is recieved
+
+=item event_handler			- A stub method designed for Event Handler Plugins to process after
 
 Causes a menu to be displayed enabling the operator to :-
 

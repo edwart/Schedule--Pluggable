@@ -2,26 +2,19 @@ package Schedule::Pluggable;
 
 use Moose;
 use Carp qw/ croak /;
-use Data::Dumper;
-$Data::Dumper::Sortkeys = 1;
 use Try::Tiny;
 
 our $VERSION = '0.0.1';
 with 'MooseX::Workers';
+with 'MooseX::Object::Pluggable';
+
 with 'Schedule::Pluggable::Trace';
 with 'Schedule::Pluggable::Config';
 with 'Schedule::Pluggable::Run';
-with 'Schedule::Pluggable::Events';
+with 'Schedule::Pluggable::EventHandler';
 with 'Schedule::Pluggable::Status';
-with 'MooseX::Object::Pluggable';
 
 our %imports = ();  # Anything supplied in the use statement goes in here e.g. use Schedule::Pluggable (something => value);
-
-has Plugins  => ( is        => 'rw',
-                  isa       => 'ArrayRef',
-                  reader    => '_get_Plugins',
-                  writer    => '_set_Plugins',
-                    );
 
 # merge anything specied in %imports with any parameters passed on object creation
 sub BUILDARGS {
@@ -32,14 +25,6 @@ sub BUILDARGS {
 }
 sub BUILD {
     my $self = shift;
-    my @plugins;
-    try {
-        @plugins = @{ $self->_get_Plugins };
-        warn Dumper \@plugins;
-        $self->load_plugins( @plugins );
-    } catch {
-           croak "Failed loading Plugins ".join(",", @plugins).": $_";
-    };
 }
 
 # Populate %imports with whatever gets supplied on the use line
