@@ -58,7 +58,7 @@ Schedule::Pluggable - Flexible Perl Process Scheduler
     my $p = Schedule::Pluggable->new;
     my $status = $p->run_in_parallel( [ qw/command1 command2 command3/ ] );
 
- 
+
  EXAMPLE #3:    With Job  Names
     use Schedule::Pluggable;
     my $p = Schedule::Pluggable->new;
