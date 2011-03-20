@@ -9,4 +9,3 @@ $no_tests++;
 ok($ps->run_in_series([ qq!$Bin/succeed.pl! ]), "One Job");
 $no_tests++;
 done_testing( $no_tests );
-diag( "Testing Schedule::Pluggable $Proc::Scheduler::VERSION" );

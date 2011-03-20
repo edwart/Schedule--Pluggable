@@ -127,7 +127,7 @@ __END__
 
 =head1 NAME
 
-Schedule::Pluggable::Monitor - Moose Role to handle the interface to MooseX::Workers by providing the methods which get called
+Schedule::Pluggable::EventHandler - Moose Role to handle the interface to MooseX::Workers by providing the methods which get called
 
 =head1 DESCRIPTION
 
@@ -156,24 +156,6 @@ Moose Role to handle the interface to MooseX::Workers by providing the methods w
 =item sig_INT               - called when the interupt signal (control-c) is recieved
 
 =item event_handler			- A stub method designed for Event Handler Plugins to process after
-
-Causes a menu to be displayed enabling the operator to :-
-
-=over 
-
-=item abort the schedule (killing all jobs still running)
-
-=item see what is running 
-
-=item kill running jobs
-
-=item add new jobs 
-
-=item change the existing job interdependencies 
-
-=item continue the schedule
-
-=back
 
 =item sig_BUS           - called when a Bus error signal is recieved - causes schedule to abort
 

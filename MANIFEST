@@ -1,11 +1,7 @@
-Makefile.PL
-MANIFEST
-README
 Build.PL
 Changes
-ignore.txt
 lib/Schedule/Pluggable/Config.pm
-lib/Schedule/Pluggable/Monitor.pm
+lib/Schedule/Pluggable/EventHandler.pm
 lib/Schedule/Pluggable/Plugin/DefaultEventHandler.pm
 lib/Schedule/Pluggable/Plugin/JobsFromData.pm
 lib/Schedule/Pluggable/Plugin/JobsFromXML.pm
@@ -13,6 +9,11 @@ lib/Schedule/Pluggable/Plugin/JobsFromXMLTemplate.pm
 lib/Schedule/Pluggable/Plugin/Trace.pm
 lib/Schedule/Pluggable/Run.pm
 lib/Schedule/Pluggable/Status.pm
+lib/Schedule/Pluggable.pm
+Makefile
+Makefile.PL
+MANIFEST
+README
 t/00.load.t
 t/01.series.t
 t/fail.pl

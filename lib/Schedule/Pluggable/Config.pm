@@ -6,11 +6,6 @@ use Try::Tiny;
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
-has JobsToRun => ( is 	=> 'rw',
-				   isa	=> 'HashRef',
-				   default => sub { return [ qw/all/ ] },
-			   );
-
 has JobsPlugin => ( is      => 'rw',
                     isa     => 'Str',
                     reader  => '_get_JobsPlugin',
