@@ -8,7 +8,6 @@ our $VERSION = '0.0.1';
 with 'MooseX::Workers';
 with 'MooseX::Object::Pluggable';
 
-with 'Schedule::Pluggable::Trace';
 with 'Schedule::Pluggable::Config';
 with 'Schedule::Pluggable::Run';
 with 'Schedule::Pluggable::EventHandler';
