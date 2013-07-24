@@ -95,6 +95,8 @@ JobSucceeded   => Event JobName Command
 MaxJobsReached => Event
 ManagerStart   => Event
 ManagerStart   => Event
+
+=back
  
 e.g. 
 C<$self->event_handler(Event    => 'JobStderr', 

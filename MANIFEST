@@ -1,4 +1,3 @@
-Build.PL
 Changes
 lib/Schedule/Pluggable/Config.pm
 lib/Schedule/Pluggable/EventHandler.pm
@@ -10,14 +9,12 @@ lib/Schedule/Pluggable/Plugin/Trace.pm
 lib/Schedule/Pluggable/Run.pm
 lib/Schedule/Pluggable/Status.pm
 lib/Schedule/Pluggable.pm
-Makefile
 Makefile.PL
 MANIFEST
 README
 t/00.load.t
 t/01.series.t
 t/fail.pl
-t/perlcritic.t
 t/pod-coverage.t
 t/pod.t
 t/succeed.pl
