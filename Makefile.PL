@@ -13,6 +13,8 @@ WriteMakefile(
         'MooseX::Workers' => 0,
         'MooseX::Object::Pluggable' => 0,
         'Test::More' => 0,
+        'XML::Simple' => 0,
+        'Template' => 0,
         'version'    => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
