@@ -5,7 +5,6 @@ lib/Schedule/Pluggable/Plugin/DefaultEventHandler.pm
 lib/Schedule/Pluggable/Plugin/JobsFromData.pm
 lib/Schedule/Pluggable/Plugin/JobsFromXML.pm
 lib/Schedule/Pluggable/Plugin/JobsFromXMLTemplate.pm
-lib/Schedule/Pluggable/Plugin/Trace.pm
 lib/Schedule/Pluggable/Run.pm
 lib/Schedule/Pluggable/Status.pm
 lib/Schedule/Pluggable.pm
