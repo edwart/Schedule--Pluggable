@@ -4,7 +4,8 @@ use Moose::Role;
 use FileHandle;
 use Data::Dumper;
 use Try::Tiny;
-use POSIX qw/ tmpnam strftime/;
+use File::Temp;
+use POSIX qw/ strftime/;
 $Data::Dumper::Sortkeys = 1;
 
 sub run_in_series {
@@ -70,7 +71,7 @@ sub run_schedule {
 #    warn Data::Dumper->Dump([$status],[qw/$status/]);
 	my @jobs_ready_to_run =  sort { $a->{name} cmp $b->{name} } values %{ $status->{Ready_to_Run} };
     delete $status->{Ready_to_Run};
-    $status->{EndOfScheduleFile} = POSIX::tmpnam();
+    $status->{EndOfScheduleFile} = File::Temp->new->filename;
 	$self->_set_status($status);
     my ($id, $pid) = $self->enqueue( MooseX::Workers::Job->new(name => 'MonitorJobs', command => sub { _monitor_jobs($self); } ));
     $status->{Pids}{MonitorJobs} = $pid;
